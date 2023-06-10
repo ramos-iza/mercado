@@ -202,7 +202,23 @@ def calc_desvio_padrao_cart(vol_portfolio_diaria):
 
 # Var paramétrico 
 def cal_var_parametrico(media_retorno_portfolio, desvio_padrao): 
-    var_p_90 = norm.ppf(.1, media_retorno_portfolio, desvio_padrao)
+    var_p_90 = norm.ppf(1-0.9, media_retorno_portfolio, desvio_padrao)
     return var_p_90
+
+
+# Retorno Anualizado 
+def calc_retorno_anualizado(adj_close):
+    retorno_anualizado = (adj_close.iloc[-1] - adj_close.iloc[0])/(adj_close.iloc[0])
+    return retorno_anualizado
+
+#Retorno anualizado carteira 
+def calc_retorn_an_carteira(retorno_anualizado, random_pesos): 
+    retorno_an_carteira = ((1 + retorno_anualizado)**(12/24))-1
+    retorno_an_carteira = retorno_an_carteira.dot(random_pesos)
+    return retorno_an_carteira
+
+
+
+
     
 
