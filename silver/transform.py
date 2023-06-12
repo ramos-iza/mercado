@@ -218,6 +218,26 @@ def calc_retorn_an_carteira(retorno_anualizado, random_pesos):
     return retorno_an_carteira
 
 
+# Retorno benchmark 
+def calc_retorno_bench(ibov): 
+    retornos_diarios_ibov = ibov.pct_change()
+    return retornos_diarios_ibov
+
+
+# Retorno do bench acumulado 
+def calc_ibov_acum(retornos_diarios_ibov):
+    ibov_acum = (retornos_diarios_ibov + 1).cumprod()
+    ibov_acum.rename(columns={'Adj Close':'Ibov'},inplace=True)
+    return ibov_acum
+
+# Juntando os Dataframes 
+def juntando_dfs(retorno_acm_carteira, ibov_acum): 
+    benchmark = pd.merge(retorno_acm_carteira, ibov_acum, how= 'inner', right_index=True, left_index=True).dropna()
+    return benchmark
+
+
+
+
 
 
     
