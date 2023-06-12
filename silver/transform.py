@@ -8,6 +8,8 @@ import pylab
 from scipy.stats import skew
 from scipy.stats import kurtosis 
 from scipy.stats import norm
+import statsmodels.api as sm
+
  
 
 # Calcular os retornos diários 
@@ -235,7 +237,24 @@ def juntando_dfs(retorno_acm_carteira, ibov_acum):
     benchmark = pd.merge(retorno_acm_carteira, ibov_acum, how= 'inner', right_index=True, left_index=True).dropna()
     return benchmark
 
-# Calculando o Beta 
+# Juntando dataframes para calcular o beta 
+def juntando_dfs_diarios(retornos_diarios_ibov, retorno_carteira_diario): 
+    retornos_diarios_ibov.rename(columns={'Adj Close' : 'Ibov'}, inplace=True)
+    beta_carteira = pd.merge(retorno_carteira_diario, retornos_diarios_ibov, how = 'inner', left_index=True, right_index=True).dropna()
+    return beta_carteira
+
+# Didicar variáveis 
+# x independente e y dependente 
+def calc_beta(beta_carteira):
+    y = beta_carteira['Retornos']
+    x = beta_carteira['Ibov']
+
+    x = sm.add_constant(x)
+
+    modelo = sm.OLS(x,y)
+    resultado = modelo.fit()
+    return resultado.params[1]
+
 
 
 
