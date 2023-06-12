@@ -256,6 +256,27 @@ def calc_beta(beta_carteira):
     return resultado.params[1]
 
 
+# Calculo sharpe e sortino 
+selic = 0.0905
+def calc_sharpe(retornos_diarios_ibov, vol_portfolio_anual): 
+    vol_ibov_anual = retornos_diarios_ibov.std() * np.sqrt(252)
+
+    sharpe_ratio_ibov = ((retornos_diarios_ibov.mean()*252)-(selic)/(vol_portfolio_anual))
+    return sharpe_ratio_ibov   
+
+def calc_sortino(retorno_carteira_diario):
+    sortino = ((retorno_carteira_diario.mean()*252) - (retorno_carteira_diario[(retorno_carteira_diario<0)]).std()*np.sqrt(252))
+    return sortino     
+
+
+# Calmar 
+# A métrica Calmar indica o retorno anualizado que a carteira gera em excesso em relação à taxa de juros livre de risco (SELIC), dividido pela magnitude da maior perda da carteira em relação ao máximo pico.
+# Em outras palavras, a carteira gerou um retorno anualizado que excedeu a taxa de juros livre de risco em cerca de 29% em relação ao drawdown observado. 
+
+def calc_calmar(retorno_carteira_diario, drawdown):
+    calmar = ((retorno_carteira_diario.mean()*252)-selic)/abs(drawdown)
+    return calmar
+    
 
 
 
