@@ -235,6 +235,9 @@ def juntando_dfs(retorno_acm_carteira, ibov_acum):
     benchmark = pd.merge(retorno_acm_carteira, ibov_acum, how= 'inner', right_index=True, left_index=True).dropna()
     return benchmark
 
+# Calculando o Beta 
+
+
 
 
 
