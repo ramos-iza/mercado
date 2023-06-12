@@ -255,6 +255,8 @@ def calc_beta(beta_carteira):
     resultado = modelo.fit()
     return resultado.params[1]
 
+# Calculo sharpe e sortino 
+
 
 
 
