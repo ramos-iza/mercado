@@ -19,7 +19,10 @@ otimizacao = {
     'nome_ativos' : ['B3SA3', 'AGRO3', 'COCA34', 'CPLE6', 'TAEE11', 'VALE3', 'CYRE3'],
     'carteira_passado' : {
         'path' : '/Users/izadoraramos/code/mercado/dados/carteira_passado.csv'
-    }
+    },
+    'carteira_futuro' : {
+        'path' : '/Users/izadoraramos/code/mercado/dados/carteira_futuro.csv'            
+    },
 }
 
 
