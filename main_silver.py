@@ -153,3 +153,23 @@ ema_exp_cov = st.ema_exp_cov(exp_cov=exp_cov, cov_carteira_futuro=cov_carteira_f
 lw_cov = st.calc_lq_cov(carteira_passado=carteira_passado)
 
 ema_lw_cov = st.calc_ema_lw_cov(lw_cov=lw_cov,cov_carteira_futuro=cov_carteira_futuro)
+
+mv = st.otm_mv(capm=capm,semi_cov=semi_cov)
+
+pesos_vol = st.pesos_min_vol(mv=mv)
+
+selic_otm_aa = st.selic_otm_aa(selic_filtrada=selic_filtrada)
+
+print('Performance da otimização de miníma variância')
+perf_mv = st.perf_mv(mv=mv, selic_otm_aa=selic_otm_aa)
+
+mv_2 = st.otm_funcao_regularizadora(capm=capm, semi_cov=semi_cov)
+
+pesos_2 = st.pesos_funcao_regularizadora(mv_2=mv_2)
+
+vol_otimizada_2 = st.otm_vol_funcao_regularizadora(pesos_2=pesos_2, cov_carteira_futuro=cov_carteira_futuro)
+
+retorno_min_vol2 =st.calc_retorno_min_vol(cf_anualizado=cf_anualizado, pesos_2=pesos_2)
+
+perf_mv_2 = st.perf_mv2(selic_otm_aa=selic_otm_aa, mv_2=mv_2)
+

@@ -11,7 +11,9 @@ from scipy.stats import norm
 import statsmodels.api as sm
 from pypfopt import expected_returns
 from pypfopt import risk_models
-import scipy
+from pypfopt import EfficientFrontier
+from pypfopt import objective_functions
+
 
  
 
@@ -407,6 +409,59 @@ def calc_lq_cov(carteira_passado):
 def calc_ema_lw_cov(lw_cov,cov_carteira_futuro):
     ema_lw_cov = np.sum(np.abs(np.diag(lw_cov) - np.diag(cov_carteira_futuro)))/len(np.diag(lw_cov))
     return ema_lw_cov
+
+# Otimização 
+
+# Miníma variância 
+def otm_mv(capm,semi_cov):
+    mv = EfficientFrontier(capm, semi_cov)
+    return mv
+
+# Pesos otimização miníma variância 
+def pesos_min_vol(mv):
+    mv.min_volatility()
+    pesos_vol = mv.clean_weights()
+    return pesos_vol
+
+def selic_otm_aa(selic_filtrada):
+    selic_otm_aa = selic_filtrada.Value.mean()/100
+    return selic_otm_aa
+
+
+# Performance da otimização de miníma variância 
+def perf_mv(mv, selic_otm_aa): 
+    perf_mv = mv.portfolio_performance(verbose = True, risk_free_rate = selic_otm_aa)
+    return perf_mv
+
+
+# Função Regularizadora
+def otm_funcao_regularizadora(capm, semi_cov): 
+    mv_2 = EfficientFrontier(capm, semi_cov)
+    mv_2.add_objective(objective_functions.L2_reg, gamma=0.1)
+    mv_2.min_volatility()
+    return mv_2
+
+def pesos_funcao_regularizadora(mv_2): 
+    pesos_2 = mv_2.clean_weights()
+    pesos_2 = pesos_2.values()
+    pesos_2 = list(pesos_2)
+    pesos_2 = np.array(pesos_2)
+    return pesos_2
+
+def otm_vol_funcao_regularizadora(pesos_2, cov_carteira_futuro): 
+    vol_otimizada_2 = np.sqrt(np.dot(pesos_2.T, np.dot(cov_carteira_futuro,pesos_2)))
+    vol_otimizada_2 = vol_otimizada_2*np.sqrt(252)
+    return vol_otimizada_2
+
+def calc_retorno_min_vol(cf_anualizado, pesos_2): 
+    retorno_min_vol2 = cf_anualizado.dot(pesos_2)
+    return retorno_min_vol2
+
+def perf_mv2(selic_otm_aa, mv_2):
+    perf_mv_2 = mv_2.portfolio_performance(verbose = True, risk_free_rate = selic_otm_aa)
+    return perf_mv_2
+
+
     
 
 
