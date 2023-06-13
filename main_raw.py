@@ -26,3 +26,4 @@ carteira_futuro = rg.baixar_carteira_futuro(nome_ativos=nome_ativos, start_out_s
 
 rs.carteira_futuro(carteira_futuro=carteira_futuro,
                    path=otm['carteira_futuro']['path'])
+
