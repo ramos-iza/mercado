@@ -3,6 +3,7 @@ from config import raw as config
 import raw.get as rg
 import raw.save as rs
 from config import otimizacao as otm 
+import nasdaqdatalink
 
 adj_close = rg.baixar_carteira(config['inicio'], config['fim'])
 
@@ -26,4 +27,9 @@ carteira_futuro = rg.baixar_carteira_futuro(nome_ativos=nome_ativos, start_out_s
 
 rs.carteira_futuro(carteira_futuro=carteira_futuro,
                    path=otm['carteira_futuro']['path'])
+
+nasdaqdatalink.ApiConfig.api_Key = otm['selic_otm']['key']
+selic_otm = rg.baixar_selic_otimizada(start_in_sample=otm['start_in_sample'], end_out_sample=otm['end_out_sample'])
+
+rs.selic_otm(selic_otm=selic_otm, path=otm['selic_otm']['path'])
 

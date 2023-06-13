@@ -15,3 +15,6 @@ def carteira_passado(carteira_passado, path):
 def carteira_futuro(carteira_futuro, path): 
     carteira_futuro.to_csv(path) 
     
+def selic_otm(selic_otm, path):
+    selic_otm.to_csv(path)    
+    

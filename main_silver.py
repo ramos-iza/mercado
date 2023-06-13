@@ -3,6 +3,7 @@ from config import raw as config
 import silver.transform as st
 from config import otimizacao as otm 
 
+
 adj_close = sg.read_csv(path=config['adj_close']['path'])
 
 retornos_diarios = st.cal_rerornos_diarios(adj_close = adj_close)
@@ -115,4 +116,12 @@ vol_fut_diaria = st.calc_vol_cart_fut(cov_carteira_futuro=cov_carteira_futuro)
 
 vol_fut_ano = st.calc_vol_fut_ano(vol_fut_diaria=vol_fut_diaria)
 
+carteira_passado = sg.read_csv(path=otm['carteira_passado']['path'])
 
+retorno_medio = st.calc_retorno_medio(carteira_passado = carteira_passado)
+
+ema_retorno_medio = st.calc_erro_medio_abs(retorno_medio=retorno_medio, cf_anualizado=cf_anualizado)
+
+mme = st.calc_mme(carteira_passado=carteira_passado)
+
+ema_mme = st.calc_erro_ema_mme(mme=mme, cf_anualizado=cf_anualizado)
