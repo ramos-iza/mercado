@@ -125,3 +125,10 @@ ema_retorno_medio = st.calc_erro_medio_abs(retorno_medio=retorno_medio, cf_anual
 mme = st.calc_mme(carteira_passado=carteira_passado)
 
 ema_mme = st.calc_erro_ema_mme(mme=mme, cf_anualizado=cf_anualizado)
+
+selic_otm = sg.read_csv(path=otm['selic_otm']['path'])
+
+selic_filtrada = st.filtro_datas(start_in_sample=otm['start_in_sample'], end_in_sample= otm['end_in_sample'], selic_otm=selic_otm)
+
+selic_otm_diaria = st.calc_selic_diaria_otm(selic_filtrada=selic_filtrada)
+

@@ -336,7 +336,21 @@ def calc_erro_ema_mme(mme, cf_anualizado):
     ema_mme = np.sum(np.abs(mme-cf_anualizado))/len(mme)
     return ema_mme
 
+# CAPM 
 
+# Taxa livre de risco 
+
+def filtro_datas(start_in_sample, end_in_sample, selic_otm): 
+    selic_otm.index = pd.to_datetime(selic_otm.index)
+    data_range = pd.date_range(start_in_sample, end_in_sample)
+    selic_filtrada = selic_otm[selic_otm.index.isin(data_range)]
+    return selic_filtrada
+
+def calc_selic_diaria_otm(selic_filtrada):
+    selic_filtrada_copia = selic_filtrada.copy()
+    selic_filtrada_copia['selic_otm_ad'] = ((1+(selic_filtrada_copia.Value/100))**(1/252)-1)
+    selic_otm_diaria = selic_filtrada_copia.selic_otm_ad.mean()
+    return selic_otm_diaria
 
 
 
