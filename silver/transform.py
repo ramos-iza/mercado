@@ -10,6 +10,8 @@ from scipy.stats import kurtosis
 from scipy.stats import norm
 import statsmodels.api as sm
 from pypfopt import expected_returns
+from pypfopt import risk_models
+import scipy
 
  
 
@@ -351,6 +353,61 @@ def calc_selic_diaria_otm(selic_filtrada):
     selic_filtrada_copia['selic_otm_ad'] = ((1+(selic_filtrada_copia.Value/100))**(1/252)-1)
     selic_otm_diaria = selic_filtrada_copia.selic_otm_ad.mean()
     return selic_otm_diaria
+
+# Calculo CAPM 
+def calc_capm(carteira_passado, ibov_sample, selic_otm_diaria): 
+    capm = expected_returns.capm_return(carteira_passado, market_prices = ibov_sample, risk_free_rate = selic_otm_diaria)
+    return capm
+
+# Erro médio absoluto CAPM
+def calc_ema_capm(capm, cf_anualizado): 
+    ema_capm = np.sum(np.abs((capm - cf_anualizado))/len(capm))
+    return ema_capm
+
+
+# Matriz de covariância 
+def calc_sample_cov(carteira_passado): 
+    sample_cov = risk_models.sample_cov(carteira_passado)
+    return sample_cov
+
+
+# Erro médio Sample Covariância
+def calc_erro_sample_cov(sample_cov, cov_carteira_futuro): 
+    ema_samble_cov = np.sum(np.abs(np.diag(sample_cov) - np.diag(cov_carteira_futuro)))/len(np.diag(sample_cov))
+    return ema_samble_cov
+
+
+# Semicovariância
+def calc_semivar(carteira_passado):
+    semi_cov = risk_models.semicovariance(carteira_passado, benchmark=0)
+    return semi_cov
+
+# Erro médio absoluto da semicovariancia 
+def calc_ema_semicov(semi_cov, cov_carteira_futura, sample_cov):
+    ema_semicov = np.sum(np.abs(np.diag(semi_cov) - np.diag(cov_carteira_futura)))/len(np.diag(sample_cov))
+    return ema_semicov
+
+
+# Exponentially-Weighted Covariance
+def calcl_exp_cov(carteira_passado): 
+    exp_cov = risk_models.exp_cov(carteira_passado, span=200)
+    return exp_cov
+
+# Erro médio Exponentially-Weighted Covariance
+def ema_exp_cov(exp_cov, cov_carteira_futuro):
+    ema_exp_cov = np.sum(np.abs(np.diag(exp_cov) - np.diag(cov_carteira_futuro)))/len(np.diag(exp_cov))
+    return ema_exp_cov
+
+# Ledoit Wolf
+def calc_lq_cov(carteira_passado):
+    lw_cov = risk_models.CovarianceShrinkage(carteira_passado).ledoit_wolf()
+    return lw_cov
+
+# Erro médio absoluto Ledoit Wolf cov 
+def calc_ema_lw_cov(lw_cov,cov_carteira_futuro):
+    ema_lw_cov = np.sum(np.abs(np.diag(lw_cov) - np.diag(cov_carteira_futuro)))/len(np.diag(lw_cov))
+    return ema_lw_cov
+    
 
 
 

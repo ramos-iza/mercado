@@ -133,3 +133,23 @@ selic_filtrada = st.filtro_datas(start_in_sample=otm['start_in_sample'], end_in_
 selic_otm_diaria = st.calc_selic_diaria_otm(selic_filtrada=selic_filtrada)
 
 ibov_sample = sg.read_csv(path=otm['ibov_sample']['path'])
+
+capm = st.calc_capm(carteira_passado=carteira_passado, ibov_sample=ibov_sample, selic_otm_diaria=selic_otm_diaria)
+
+ema_capm = st.calc_ema_capm(capm=capm, cf_anualizado=cf_anualizado)
+
+sample_cov = st.calc_sample_cov(carteira_passado=carteira_passado)
+
+ema_sample_cov = st.calc_erro_sample_cov(sample_cov=sample_cov, cov_carteira_futuro=cov_carteira_futuro)
+
+semi_cov = st.calc_semivar(carteira_passado=carteira_passado)
+
+ema_semicov = st.calc_ema_semicov(semi_cov=semi_cov, cov_carteira_futura=cov_carteira_futuro, sample_cov=sample_cov)
+
+exp_cov = st.calcl_exp_cov(carteira_passado=carteira_passado)
+
+ema_exp_cov = st.ema_exp_cov(exp_cov=exp_cov, cov_carteira_futuro=cov_carteira_futuro)
+
+lw_cov = st.calc_lq_cov(carteira_passado=carteira_passado)
+
+ema_lw_cov = st.calc_ema_lw_cov(lw_cov=lw_cov,cov_carteira_futuro=cov_carteira_futuro)
