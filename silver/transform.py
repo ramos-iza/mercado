@@ -9,6 +9,7 @@ from scipy.stats import skew
 from scipy.stats import kurtosis 
 from scipy.stats import norm
 import statsmodels.api as sm
+from pypfopt import expected_returns
 
  
 
@@ -313,6 +314,30 @@ def calc_vol_cart_fut(cov_carteira_futuro):
 def calc_vol_fut_ano(vol_fut_diaria):
     vol_fut_ano = vol_fut_diaria*np.sqrt(252)
     return vol_fut_ano
+
+
+# Estimando os retornos 
+def calc_retorno_medio(carteira_passado): 
+    retorno_medio = expected_returns.mean_historical_return(carteira_passado)
+    return retorno_medio
+
+# EMA - erro médio absoluto
+def calc_erro_medio_abs(retorno_medio, cf_anualizado): 
+    ema_retorno_medio = (np.sum(np.abs(retorno_medio - cf_anualizado))/len(retorno_medio))
+    return ema_retorno_medio
+
+# MME - Média Móvel Exponencial
+def calc_mme(carteira_passado):
+    mme = expected_returns.ema_historical_return(carteira_passado , span=200)
+    return mme
+
+# Erro médio absoluto da média móvel exponencial
+def calc_erro_ema_mme(mme, cf_anualizado):
+    ema_mme = np.sum(np.abs(mme-cf_anualizado))/len(mme)
+    return ema_mme
+
+
+
 
 
 
