@@ -1,6 +1,7 @@
 import silver.get as sg
 from config import raw as config
 import silver.transform as st
+from config import otimizacao as otm 
 
 adj_close = sg.read_csv(path=config['adj_close']['path'])
 
@@ -99,4 +100,19 @@ sharpe_ratio = st.calc_sharpe(retornos_diarios_ibov, vol_portfolio_anual)
 sortino = st.calc_sortino(retorno_carteira_diario=retorno_carteira_diario)
 
 calmar = st.calc_calmar(retorno_carteira_diario, drawdown=max_drawdown)
+
+carteira_futuro = sg.read_csv(path=otm['carteira_futuro']['path'])
+
+cf_anualizado = st.calc_retorno_carteira_fut(carteira_futuro=carteira_futuro)
+
+cf_anualizado_carteira = st.calc_retorno_ano_carteira(cf_anualizado=cf_anualizado)
+
+carteira_futuro_retornos = st.calc_retorno_diario(carteira_futuro=carteira_futuro)
+
+cov_carteira_futuro = st.calc_cov_cart_fut(carteira_futuro_retornos=carteira_futuro_retornos)
+
+vol_fut_diaria = st.calc_vol_cart_fut(cov_carteira_futuro=cov_carteira_futuro)
+
+vol_fut_ano = st.calc_vol_fut_ano(vol_fut_diaria=vol_fut_diaria)
+
 

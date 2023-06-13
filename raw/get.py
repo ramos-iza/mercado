@@ -14,7 +14,11 @@ def baixar_dados_bench(inicio, fim):
     ibov = pd.DataFrame(ibov)
     return ibov
 
-def baixa_carteira_passado(nome_ativos, start_in_sample, end_in_sample): 
+def baixar_carteira_passado(nome_ativos, start_in_sample, end_in_sample): 
     carteira_passado = yf.download(nome_ativos, start = start_in_sample, end = end_in_sample)['Close']
     return carteira_passado
+
+def baixar_carteira_futuro(nome_ativos, start_out_sample, end_out_sample):
+    carteira_futuro = yf.download(nome_ativos, start = start_out_sample, end = end_out_sample)['Close']
+    return carteira_futuro
 

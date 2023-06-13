@@ -17,7 +17,13 @@ rs.ibov(ibov=ibov,
 nome_ativos = otm['nome_ativos']
 nome_ativos = [ativo + '.SA' for ativo in nome_ativos]
     
-carteira_passado = rg.baixa_carteira_passado(nome_ativos=nome_ativos, start_in_sample=otm['start_in_sample'], end_in_sample=otm['end_in_sample'])
+carteira_passado = rg.baixar_carteira_passado(nome_ativos=nome_ativos, start_in_sample=otm['start_in_sample'], end_in_sample=otm['end_in_sample'])
 
 rs.carteira_passado(carteira_passado=carteira_passado,
                     path=otm['carteira_passado']['path'])
+
+carteira_futuro = rg.baixar_carteira_futuro(nome_ativos=nome_ativos, start_out_sample=otm['start_out_sample'], end_out_sample=otm['end_out_sample'])
+
+rs.carteira_futuro(carteira_futuro=carteira_futuro,
+                   path=otm['carteira_futuro']['path'])
+

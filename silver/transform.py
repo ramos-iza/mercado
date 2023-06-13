@@ -276,6 +276,54 @@ def calc_sortino(retorno_carteira_diario):
 def calc_calmar(retorno_carteira_diario, drawdown):
     calmar = ((retorno_carteira_diario.mean()*252)-selic)/abs(drawdown)
     return calmar
+
+
+# Retorno anualizado da carteira futura
+pesos = np.array([0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25])
+def calc_retorno_carteira_fut(carteira_futuro): 
+    cf_anualizado = (carteira_futuro.iloc[-1] - carteira_futuro.iloc[0])/carteira_futuro.iloc[0]
+    cf_anualizado = ((1+ cf_anualizado) ** (12/48))-1
+    return cf_anualizado
+
+
+def calc_retorno_ano_carteira(cf_anualizado):
+    cf_anualizado_carteira = cf_anualizado.dot(pesos)
+    return cf_anualizado_carteira
+
+
+# Retorno diário da carteira futuro 
+def calc_retorno_diario(carteira_futuro):
+    carteira_futuro_retornos = carteira_futuro.pct_change()
+    return carteira_futuro_retornos
+
+
+# Covariância da carteira Futura 
+def calc_cov_cart_fut(carteira_futuro_retornos): 
+    cov_carteira_futuro = carteira_futuro_retornos.cov()
+    return cov_carteira_futuro
+
+
+# Volatilidade da carteira Futura
+def calc_vol_cart_fut(cov_carteira_futuro):
+    vol_fut_diaria = np.sqrt(np.dot(pesos.T, np.dot(cov_carteira_futuro, pesos)))
+    return vol_fut_diaria
+
+
+# Volatilidade da carteira Futura ao ano 
+def calc_vol_fut_ano(vol_fut_diaria):
+    vol_fut_ano = vol_fut_diaria*np.sqrt(252)
+    return vol_fut_ano
+
+
+
+
+
+
+
+
+    
+
+
     
 
 

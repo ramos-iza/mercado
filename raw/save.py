@@ -12,3 +12,6 @@ def carteira_passado(carteira_passado, path):
     carteira_passado.to_csv(path) 
   
 
+def carteira_futuro(carteira_futuro, path): 
+    carteira_futuro.to_csv(path) 
+    
