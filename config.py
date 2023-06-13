@@ -23,7 +23,11 @@ otimizacao = {
     'carteira_futuro' : {
         'path' : '/Users/izadoraramos/code/mercado/dados/carteira_futuro.csv'            
     },
-}
+    'selic_otm' : {
+    'path' : '/Users/izadoraramos/code/mercado/dados/selic_otm.csv',
+    'key' : 'D_YbTtVVJZ4SFmsxZzKc'
+    },
+}    
 
 
 
