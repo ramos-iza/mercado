@@ -27,6 +27,9 @@ otimizacao = {
     'path' : '/Users/izadoraramos/code/mercado/dados/selic_otm.csv',
     'key' : 'D_YbTtVVJZ4SFmsxZzKc'
     },
+    'ibov_sample' : {
+    'path' : '/Users/izadoraramos/code/mercado/dados/ibov_sample.csv',
+    },
 }    
 
 

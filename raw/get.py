@@ -31,3 +31,10 @@ def baixar_selic_otimizada(start_in_sample,end_out_sample):
     selic_otm = nasdaqdatalink.get('BCB/432', start_date=start_in_sample, end_date=end_out_sample, collapse='daily')
     return selic_otm
 
+
+def baixar_ibov_in_sample(start_in_sample, end_in_sample): 
+    ibov_sample = yf.download('^BVSP', start = start_in_sample, end = end_in_sample)['Close']
+    ibov_sample = pd.DataFrame(ibov_sample)
+    ibov_sample
+    return ibov_sample
+

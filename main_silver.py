@@ -132,3 +132,4 @@ selic_filtrada = st.filtro_datas(start_in_sample=otm['start_in_sample'], end_in_
 
 selic_otm_diaria = st.calc_selic_diaria_otm(selic_filtrada=selic_filtrada)
 
+ibov_sample = sg.read_csv(path=otm['ibov_sample']['path'])

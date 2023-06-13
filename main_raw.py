@@ -33,3 +33,7 @@ selic_otm = rg.baixar_selic_otimizada(start_in_sample=otm['start_in_sample'], en
 
 rs.selic_otm(selic_otm=selic_otm, path=otm['selic_otm']['path'])
 
+ibov_sample = rg.baixar_ibov_in_sample(start_in_sample=otm['start_in_sample'], end_in_sample=otm['end_in_sample'])
+
+rs.ibov_sample(ibov_sample=ibov_sample, path=otm['ibov_sample']['path'])
+

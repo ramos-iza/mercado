@@ -18,3 +18,6 @@ def carteira_futuro(carteira_futuro, path):
 def selic_otm(selic_otm, path):
     selic_otm.to_csv(path)    
     
+def ibov_sample(ibov_sample, path):
+    ibov_sample.to_csv(path)    
+    
