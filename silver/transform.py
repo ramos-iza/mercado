@@ -13,6 +13,8 @@ from pypfopt import expected_returns
 from pypfopt import risk_models
 from pypfopt import EfficientFrontier
 from pypfopt import objective_functions
+from pypfopt import EfficientSemivariance
+from pypfopt import HRPOpt
 
 
  
@@ -491,6 +493,66 @@ def otm_vol_re(re_pesos, cov_carteira_futura):
 def calc_retorno_re(cf_anualizado, re_pesos):   
     retorno_re_otimizado = cf_anualizado.dot(re_pesos)
     return retorno_re_otimizado    
+
+
+# Retorno Eficiente
+def calc_retorno_eficiente(capm, semi_cov):
+    retorno_eficiente = EfficientFrontier(capm, semi_cov)
+    retorno_eficiente.efficient_return(target_return=0.0)
+    return retorno_eficiente
+
+
+def pesos_retorno_eficiente(retorno_eficiente):
+    pesos_retorno_eficiente = retorno_eficiente.clean_weights()
+    pesos_retornos_eficiente = pesos_retorno_eficiente.values()
+    pesos_retornos_eficiente = np.array(list(pesos_retornos_eficiente))
+    return pesos_retornos_eficiente
+
+
+def calc_retorno_eficiente_2(cf_anualizado, pesos_retornos_eficiente):
+    retorno_eficiente_2 = cf_anualizado.dot(pesos_retornos_eficiente)
+    return retorno_eficiente_2
+
+# Hierarchical Risk Parity
+def calc_retorno_rp(carteira_passado):
+    retornos_rp = expected_returns.returns_from_prices(carteira_passado)
+    retornos_rp = retornos_rp.dropna()
+    return retornos_rp
+
+def hrp_portfolio(retornos_rp):
+    hrp_portfolio = HRPOpt(retornos_rp)
+    hrp_portfolio.optimize()
+    return hrp_portfolio
+
+def perf_hrp(hrp_portfolio, selic_otm_aa):
+    perf_hrp = hrp_portfolio.portfolio_performance(verbose=True, risk_free_rate=selic_otm_aa)
+    return perf_hrp
+
+# Max Sharpe 
+# A otimização de Max Sharpe foi impossibilitada porque o retorno de nenhum dos ativos é maior do que o retorno da taxa livre de risco.
+def otm_max_sharpe(capm, semi_cov): 
+    msharpe = EfficientFrontier(capm, semi_cov)
+    msharpe.max_sharpe(risk_free_rate=selic_otm_aa)
+    return msharpe
+
+
+def pesos_msharpe(msharpe):
+    pesos_msharpe = msharpe.clean_weights()
+    pesos_msharpe = pesos_msharpe.values =()
+    pesos_msharpe = list(pesos_msharpe)
+    pesos_msharpe = np.array(pesos_msharpe)
+    return pesos_msharpe
+
+
+def otm_vol_msharpe(pesos_msharpe, cov_carteira_futura):
+    volsharpe = np.sqrt(np.dot(pesos_msharpe.T, np.dot(cov_carteira_futura, pesos_msharpe)))
+    volsharpe = volsharpe * np.sqrt(252)
+    return volsharpe
+
+
+def retorno_msharpe(cf_anualizado, sharpe_pesos): 
+    retorno_sharpe = cf_anualizado.dot(sharpe_pesos)
+    return retorno_sharpe
 
 
 
