@@ -457,12 +457,40 @@ def calc_retorno_min_vol(cf_anualizado, pesos_2):
     retorno_min_vol2 = cf_anualizado.dot(pesos_2)
     return retorno_min_vol2
 
+
 def perf_mv2(selic_otm_aa, mv_2):
     perf_mv_2 = mv_2.portfolio_performance(verbose = True, risk_free_rate = selic_otm_aa)
     return perf_mv_2
 
 
+# Risco Eficiente
+def otm_risco_eficiente(capm, semi_cov):
+    risco_eficiente = EfficientFrontier(capm, semi_cov)
+    risco_eficiente.efficient_risk(target_volatility=0.25)
+    return risco_eficiente
+
+
+def pesos_re(risco_eficiente): 
+    re_pesos = risco_eficiente.clean_weights(rounding = 2)
+    re_pesos = re_pesos.values()
+    re_pesos = np.array(list(re_pesos))
+    return re_pesos
+
+
+def perf_re(risco_eficiente, selic_otm_aa): 
+    perf_re = risco_eficiente.portfolio_performance(verbose=True, risk_free_rate=selic_otm_aa)
+    return perf_re
+
+
+def otm_vol_re(re_pesos, cov_carteira_futura):
+    vol_re_otimizada = np.sqrt(np.dot(re_pesos.T, np.dot(cov_carteira_futura, re_pesos)))
+    vol_re_otimizada = vol_re_otimizada * np.sqrt(252)
+    return vol_re_otimizada 
     
+
+def calc_retorno_re(cf_anualizado, re_pesos):   
+    retorno_re_otimizado = cf_anualizado.dot(re_pesos)
+    return retorno_re_otimizado    
 
 
 
